@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Akshara — Learn ಕನ್ನಡ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=Noto+Sans+Kannada:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --saffron: #F4531C;
+  --saffron-light: #FFF6ED;
+  --saffron-mid: #FFE0CC;
+  --teal: #0EA884;
+  --teal-light: #E5FAF5;
+  --navy: #1A1A2E;
+  --navy-mid: #2E2E4A;
+  --ivory: #FFFDF9;
+  --gold: #FFB347;
+  --muted: #6B6B80;
+  --wrap: 1080px;
+  --pad: clamp(20px, 5vw, 80px);
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ivory);
+  color: var(--navy);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.k { font-family: 'Noto Sans Kannada', serif; }
+
+/* ── WRAPPER ── */
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+  width: 100%;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(255,253,249,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(244,83,28,0.1);
+}
+.nav-inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 14px var(--pad);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-char { font-family: 'Noto Sans Kannada', serif; font-size: 28px; font-weight: 900; color: var(--saffron); line-height: 1; }
+.nav-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--navy); }
+.nav-cta {
+  background: var(--saffron); color: #fff; border: none; border-radius: 100px;
+  padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s; text-decoration: none;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: #d94410; transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding-top: 90px; padding-bottom: 60px;
+  background: linear-gradient(155deg, var(--saffron-light) 0%, var(--ivory) 55%, var(--teal-light) 100%);
+  position: relative; overflow: hidden;
+}
+.hero-wm {
+  position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  font-family: 'Noto Sans Kannada', serif;
+  font-size: clamp(180px, 26vw, 380px); font-weight: 900;
+  color: rgba(244,83,28,0.05); line-height: 1;
+  pointer-events: none; user-select: none;
+  animation: floatY 8s ease-in-out infinite;
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(-50%); }
+  50% { transform: translateY(calc(-50% - 16px)); }
+}
+.hero-content { position: relative; z-index: 1; max-width: 640px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #fff; border: 1.5px solid var(--saffron-mid); border-radius: 100px;
+  padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--saffron);
+  margin-bottom: 16px; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.age-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.abadge { font-size: 12px; font-weight: 600; padding: 5px 13px; border-radius: 100px; }
+.abadge.live { background: rgba(14,168,132,0.12); color: var(--teal); border: 1.5px solid rgba(14,168,132,0.25); }
+.abadge.soon { background: rgba(244,83,28,0.07); color: var(--saffron); border: 1.5px dashed rgba(244,83,28,0.3); }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4.5vw, 52px); font-weight: 900; line-height: 1.15;
+  color: var(--navy); margin-bottom: 18px;
+}
+.hero h1 em { font-style: italic; color: var(--saffron); }
+.hero-sub {
+  font-size: clamp(15px, 1.7vw, 17px); line-height: 1.8;
+  color: var(--muted); margin-bottom: 28px; max-width: 520px;
+}
+.hero-btns { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.btn-p {
+  background: var(--saffron); color: #fff; border: none; border-radius: 100px;
+  padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s; text-decoration: none; display: inline-block;
+  box-shadow: 0 6px 20px rgba(244,83,28,0.28);
+}
+.btn-p:hover { background: #d94410; transform: translateY(-2px); }
+.btn-s {
+  background: transparent; color: var(--navy); border: 2px solid rgba(26,26,46,0.18); border-radius: 100px;
+  padding: 12px 22px; font-size: 14px; font-weight: 500; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s; text-decoration: none; display: inline-block;
+}
+.btn-s:hover { border-color: var(--saffron); color: var(--saffron); }
+.trust { font-size: 12px; color: var(--muted); }
+.trust b { color: var(--teal); }
+.hero-stats {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  padding-top: 20px; border-top: 1px solid rgba(244,83,28,0.13); margin-top: 24px;
+}
+.stat-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--saffron); line-height: 1; }
+.stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ── SECTIONS ── */
+.section { padding: 72px 0; }
+.section-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--pad); }
+.section-head { margin-bottom: 44px; max-width: 640px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--saffron); margin-bottom: 10px; }
+.eyebrow.teal { color: var(--teal); }
+h2 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.2vw, 36px); font-weight: 900; color: var(--navy); line-height: 1.2; margin-bottom: 12px; }
+.sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 500px; }
+
+/* ── PROBLEM ── */
+.prob { background: #fff; }
+.prob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pc {
+  background: var(--saffron-light); border: 1.5px solid rgba(244,83,28,0.12);
+  border-radius: 18px; padding: 28px 22px;
+  transition: transform .2s, box-shadow .2s; position: relative; overflow: hidden;
+}
+.pc:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(244,83,28,0.1); }
+.pc::after {
+  content: attr(data-n); position: absolute; top: -8px; right: 14px;
+  font-family: 'Playfair Display', serif; font-size: 68px; font-weight: 900;
+  color: rgba(244,83,28,0.07); line-height: 1; pointer-events: none;
+}
+.pc-ico { font-size: 26px; margin-bottom: 12px; display: block; }
+.pc h3 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 8px; line-height: 1.35; }
+.pc p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.hl { margin-top: 12px; padding: 9px 11px; background: rgba(244,83,28,0.07); border-left: 3px solid var(--saffron); border-radius: 0 8px 8px 0; font-size: 12px; color: var(--navy); font-weight: 500; line-height: 1.6; }
+
+/* ── HOW ── */
+.how { background: var(--saffron-light); }
+.steps { display: flex; flex-direction: column; }
+.step {
+  display: grid; grid-template-columns: 52px 1fr; gap: 0 24px;
+  padding: 28px 0; border-bottom: 1px solid rgba(244,83,28,0.1);
+  opacity: 0; transform: translateY(16px); transition: all .5s ease;
+}
+.step.visible { opacity: 1; transform: translateY(0); }
+.step:last-child { border-bottom: none; }
+.snum {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--saffron); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; flex-shrink: 0; margin-top: 2px;
+}
+.step h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.3; }
+.step p { font-size: 13px; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
+.vpills { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 12px; }
+.vp {
+  font-family: 'Noto Sans Kannada', serif; font-size: 16px; font-weight: 900;
+  padding: 6px 15px; border-radius: 100px; border: 2px solid var(--saffron);
+  color: var(--saffron); background: transparent; cursor: pointer; transition: all .2s;
+}
+.vp.active, .vp:hover { background: var(--saffron); color: #fff; }
+.wcard {
+  background: #fff; border-radius: 14px; padding: 12px 16px;
+  display: inline-flex; align-items: center; gap: 12px;
+  border: 1.5px solid rgba(244,83,28,0.18);
+  box-shadow: 0 3px 12px rgba(244,83,28,0.07); animation: fadeIn .3s ease;
+  max-width: 100%;
+}
+@keyframes fadeIn { from { opacity:0; transform:scale(.97); } to { opacity:1; transform:scale(1); } }
+.wk { font-family: 'Noto Sans Kannada', serif; font-size: 20px; font-weight: 900; color: var(--navy); line-height: 1; }
+.wr { font-size: 10px; font-weight: 700; color: var(--saffron); margin-top: 3px; }
+.we2 { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.trow { display: inline-flex; align-items: center; gap: 5px; background: #fff; border-radius: 11px; padding: 9px 13px; border: 1.5px solid rgba(244,83,28,0.18); flex-wrap: wrap; }
+.tb { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Noto Sans Kannada', serif; font-size: 16px; font-weight: 900; }
+.tb.e { border: 2px dashed rgba(244,83,28,0.3); background: var(--saffron-light); color: rgba(244,83,28,0.2); }
+.tb.d { border: 2px solid #22C55E; background: #F0FFF4; color: #22C55E; font-size: 12px; }
+.scan-demo { background: #fff; border-radius: 11px; padding: 11px 14px; display: inline-flex; align-items: center; gap: 9px; border: 1.5px solid rgba(244,83,28,0.18); font-size: 13px; color: var(--muted); max-width: 100%; }
+.games-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.game-chip { background: #fff; border: 1.5px solid rgba(244,83,28,0.18); border-radius: 10px; padding: 7px 12px; font-size: 13px; color: var(--navy); white-space: nowrap; }
+
+/* ── FEATURES ── */
+.feats { background: var(--navy); }
+.feats .eyebrow { color: var(--gold); }
+.feats h2 { color: #fff; }
+.feats .sub { color: rgba(255,255,255,0.5); }
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.fc {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px; padding: 22px 20px; transition: all .2s;
+}
+.fc:hover { background: rgba(255,255,255,0.09); transform: translateY(-3px); border-color: rgba(244,83,28,0.35); }
+.fci { font-size: 24px; margin-bottom: 12px; display: block; }
+.fc h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; line-height: 1.4; }
+.fc p { font-size: 13px; color: rgba(255,255,255,0.48); line-height: 1.7; }
+.ctag { display: inline-block; margin-top: 10px; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: rgba(244,83,28,0.2); color: var(--gold); letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── SAFETY ── */
+.safety { background: var(--teal-light); }
+.safety-inner { max-width: 720px; }
+.safety-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 28px 0; }
+.si { text-align: center; }
+.si-ico { width: 52px; height: 52px; border-radius: 14px; background: #fff; border: 1.5px solid rgba(14,168,132,0.2); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 8px; }
+.si-lbl { font-size: 11px; font-weight: 700; color: var(--teal); line-height: 1.3; }
+.safety-note { font-size: 13px; color: var(--teal); font-weight: 600; }
+
+/* ── PARENTS ── */
+.parents { background: #fff; }
+.pa-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.pac { border-radius: 18px; padding: 30px 26px; }
+.pac.kn { background: linear-gradient(135deg, var(--saffron-light), #fff); border: 2px solid rgba(244,83,28,0.18); }
+.pac.ml { background: linear-gradient(135deg, var(--teal-light), #fff); border: 2px solid rgba(14,168,132,0.18); }
+.ptag { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; display: inline-block; margin-bottom: 12px; }
+.kn .ptag { background: rgba(244,83,28,0.1); color: var(--saffron); }
+.ml .ptag { background: rgba(14,168,132,0.1); color: var(--teal); }
+.pac h3 { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--navy); margin-bottom: 10px; line-height: 1.3; }
+.pac p { font-size: 13px; color: var(--muted); line-height: 1.75; }
+.scen { margin-top: 14px; padding: 12px; background: rgba(255,255,255,0.7); border-radius: 9px; font-size: 12px; color: var(--navy); line-height: 1.65; font-style: italic; }
+
+/* ── COMING ── */
+.coming { background: var(--ivory); }
+.coming-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.cc { background: #fff; border-radius: 16px; padding: 22px 18px; border: 1.5px solid rgba(14,168,132,0.13); box-shadow: 0 3px 14px rgba(14,168,132,0.05); transition: transform .2s, box-shadow .2s; }
+.cc:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(14,168,132,0.1); }
+.cstag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; margin-bottom: 11px; }
+.cstag.s { background: rgba(14,168,132,0.1); color: var(--teal); }
+.cstag.p { background: rgba(244,83,28,0.08); color: var(--saffron); }
+.cci { font-size: 24px; margin-bottom: 10px; display: block; }
+.cc h3 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 7px; line-height: 1.35; }
+.cc p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.ccta { background: linear-gradient(135deg, var(--teal-light), #fff); border: 1.5px dashed rgba(14,168,132,0.35); border-radius: 13px; padding: 16px 22px; font-size: 14px; color: var(--muted); }
+.ccta a { color: var(--teal); font-weight: 600; text-decoration: none; }
+
+/* ── TESTIMONIAL ── */
+.testi { background: linear-gradient(135deg, var(--saffron-light) 0%, #fff 60%, var(--teal-light) 100%); text-align: center; }
+.qm { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 900; color: rgba(244,83,28,0.1); line-height: 0.4; display: block; margin-bottom: 16px; }
+.qt { font-family: 'Playfair Display', serif; font-size: clamp(18px, 2.5vw, 28px); font-weight: 700; font-style: italic; color: var(--navy); line-height: 1.55; max-width: 640px; margin: 0 auto 22px; }
+.qa { display: flex; align-items: center; justify-content: center; gap: 11px; }
+.av { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--saffron), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 17px; color: #fff; font-weight: 700; font-family: 'Playfair Display', serif; flex-shrink: 0; }
+.an { font-size: 14px; font-weight: 600; color: var(--navy); text-align: left; }
+.as { font-size: 12px; color: var(--muted); text-align: left; }
+
+/* ── WAITLIST ── */
+.wls { background: var(--navy); text-align: center; }
+.wls .eyebrow { color: var(--gold); }
+.wls h2 { color: #fff; }
+.wsub { font-size: 15px; color: rgba(255,255,255,0.5); max-width: 380px; margin: 0 auto 32px; line-height: 1.7; }
+.wform { display: flex; gap: 9px; max-width: 440px; margin: 0 auto 12px; }
+.winp {
+  flex: 1; min-width: 0; padding: 13px 18px; border-radius: 100px;
+  border: 1.5px solid rgba(255,255,255,0.13); background: rgba(255,255,255,0.07);
+  color: #fff; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; transition: border .2s;
+}
+.winp::placeholder { color: rgba(255,255,255,0.33); }
+.winp:focus { border-color: var(--saffron); }
+.wbtn {
+  background: var(--saffron); color: #fff; border: none; border-radius: 100px;
+  padding: 13px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s; white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(244,83,28,0.38);
+}
+.wbtn:hover { background: #d94410; transform: translateY(-2px); }
+.wnote { font-size: 11px; color: rgba(255,255,255,0.3); margin-bottom: 0; }
+.wsuc { display: none; background: rgba(14,168,132,0.1); border: 1.5px solid var(--teal); border-radius: 13px; padding: 16px; color: var(--teal); font-size: 14px; font-weight: 500; max-width: 440px; margin: 0 auto; }
+.wbadges { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: 36px; }
+.wb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.38); }
+.wb span { font-size: 15px; }
+
+/* ── FOOTER ── */
+footer { background: var(--navy-mid); }
+.footer-inner { max-width: var(--wrap); margin: 0 auto; padding: 26px var(--pad); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+.fl { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.6); }
+.flt { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 3px; }
+.flinks { display: flex; gap: 16px; flex-wrap: wrap; }
+.flinks a { font-size: 12px; color: rgba(255,255,255,0.33); text-decoration: none; transition: color .2s; }
+.flinks a:hover { color: var(--saffron); }
+
+/* ── ANIMATIONS ── */
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── TABLET (≤900px) ── */
+@media (max-width: 900px) {
+  .prob-grid { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: repeat(2, 1fr); }
+  .coming-grid { grid-template-columns: repeat(2, 1fr); }
+  .safety-grid { grid-template-columns: repeat(3, 1fr); }
+  .pa-grid { grid-template-columns: 1fr; }
+}
+
+/* ── MOBILE (≤640px) ── */
+@media (max-width: 640px) {
+  :root { --pad: 18px; }
+
+  .nav-name { display: none; }
+  .nav-inner { padding: 12px var(--pad); }
+
+  .hero { padding-top: 80px; padding-bottom: 48px; }
+  .hero-wm { font-size: 160px; opacity: 0.04; right: -10px; }
+  .hero h1 { font-size: 28px; }
+  .hero-sub { font-size: 15px; }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-p, .btn-s { text-align: center; width: 100%; }
+  .hero-stats { gap: 16px; }
+
+  .section { padding: 52px 0; }
+  .section-head { margin-bottom: 32px; }
+  h2 { font-size: 24px; }
+
+  .prob-grid { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .coming-grid { grid-template-columns: 1fr; }
+  .pa-grid { grid-template-columns: 1fr; }
+  .safety-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  .step { grid-template-columns: 44px 1fr; gap: 0 14px; padding: 22px 0; }
+  .step h3 { font-size: 16px; }
+  .snum { width: 40px; height: 40px; font-size: 16px; }
+
+  .wform { flex-direction: column; }
+  .winp, .wbtn { width: 100%; }
+
+  .qt { font-size: 18px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+
+  .games-row .game-chip { font-size: 12px; padding: 6px 10px; }
+  .vpills .vp { font-size: 15px; padding: 5px 12px; }
+
+  .pac { padding: 22px 18px; }
+  .pac h3 { font-size: 17px; }
+
+  .wbadges { gap: 12px; }
+}
+
+/* ── VERY SMALL (≤380px) ── */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 24px; }
+  .safety-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">
+      <div class="nav-char k">ಅ</div>
+      <div class="nav-name">Akshara · Learn ಕನ್ನಡ</div>
+    </a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-wm k">ಅ</div>
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="pill">✦ Now in beta · Ages 4–6</div>
+      <div class="age-row">
+        <span class="abadge live">✅ Ages 4–6 — available now</span>
+        <span class="abadge soon">⏳ Ages 6–8 — coming soon</span>
+      </div>
+      <h1>Kannada language learning is required at school. <em>Help your child to actually learn it</em> and have fun along the way.</h1>
+      <p class="hero-sub">Akshara is a non-stimulating, engaging, child-friendly platform that teaches Kannada letters, words, pronunciation and meaning — together, in English — for children and parents who don't speak Kannada.</p>
+      <div class="hero-btns">
+        <a href="#waitlist" class="btn-p">Join the Waitlist →</a>
+        <a href="#how" class="btn-s">See how it works</a>
+      </div>
+      <p class="trust">🔒 <b>Safe &amp; private.</b> No data collected. No tracking. No ads.</p>
+      <div class="hero-stats">
+        <div><div class="stat-num">13</div><div class="stat-lbl">Kannada vowels</div></div>
+        <div><div class="stat-num">130+</div><div class="stat-lbl">words with audio</div></div>
+        <div><div class="stat-num">2-in-1</div><div class="stat-lbl">pronunciation + meaning</div></div>
+        <div><div class="stat-num">100%</div><div class="stat-lbl">English-friendly</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section prob" id="problem">
+  <div class="section-wrap">
+    <div class="section-head fade-up">
+      <div class="eyebrow">The problem</div>
+      <h2>Kannada school books are entirely<br/>in Kannada. Some parents can't read them.</h2>
+      <p class="sub">Thousands of families in Karnataka — and in the Kannada diaspora worldwide — face this every day. Kannada is compulsory in school, but tools to help at home simply don't exist.</p>
+    </div>
+    <div class="prob-grid">
+      <div class="pc fade-up" data-n="1">
+        <span class="pc-ico">📚</span>
+        <h3>Homework comes home. And no one can help.</h3>
+        <p>Activity books, homework sheets, and school poems are in Kannada script. For parents who grew up speaking a different language, helping with homework isn't straightforward.</p>
+        <div class="hl">Families in Bengaluru who speak Hindi, Bengali, Tamil, Telugu, or English face this every single day.</div>
+      </div>
+      <div class="pc fade-up" data-n="2">
+        <span class="pc-ico">🔍</span>
+        <h3>Google Translate isn't a solution</h3>
+        <p>Parents use Google Translate, Google Lens, and Search — switching between apps, word by word, page by page. No single platform gives both pronunciation in English and meaning in English, together.</p>
+        <div class="hl">You shouldn't need 4 apps just to help your child read one page of homework.</div>
+      </div>
+      <div class="pc fade-up" data-n="3">
+        <span class="pc-ico">😟</span>
+        <h3>Poems &amp; passages are the hardest</h3>
+        <p>A Kannada school poem is a real challenge — unfamiliar letters, no pronunciation guide, no translation. Children can't memorise what they don't understand.</p>
+        <div class="hl">Akshara lets you scan a poem and read it with pronunciation and meaning, so your child can memorise it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="how">
+  <div class="section-wrap">
+    <div class="section-head fade-up">
+      <div class="eyebrow">How it works</div>
+      <h2>One platform. Letters, words,<br/>pronunciation &amp; meaning — all together.</h2>
+      <p class="sub">Designed for 5–10 minute daily sessions that build real Kannada confidence.</p>
+    </div>
+    <div class="steps">
+      <div class="step fade-up">
+        <div><div class="snum">1</div></div>
+        <div>
+          <h3>Learn letters — hear how they sound in English</h3>
+          <p>Pick any Kannada vowel. Hear the pronunciation clearly in English phonetics. Tap to explore all 10 words for that letter.</p>
+          <div class="vpills" id="vpills">
+            <button class="vp active" onclick="selectV('a',this)">ಅ</button>
+            <button class="vp" onclick="selectV('aa',this)">ಆ</button>
+            <button class="vp" onclick="selectV('i',this)">ಇ</button>
+            <button class="vp" onclick="selectV('ee',this)">ಈ</button>
+            <button class="vp" onclick="selectV('u',this)">ಉ</button>
+          </div>
+          <div class="wcard" id="wcard">
+            <span id="we" style="font-size:24px;">👩</span>
+            <div>
+              <div class="wk k" id="wk">ಅಮ್ಮ</div>
+              <div class="wr" id="wro">amma — "um-maa"</div>
+              <div class="we2" id="weng">Mother</div>
+            </div>
+            <span style="color:var(--saffron);font-size:18px;margin-left:4px;">🔊</span>
+          </div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div><div class="snum">2</div></div>
+        <div>
+          <h3>Tap any word — get pronunciation &amp; meaning instantly</h3>
+          <p>Every word card plays Kannada audio, then English phonetic pronunciation, then English meaning. A parent with zero Kannada knowledge can guide their child through every word.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div class="wcard"><span style="font-size:22px;">🐘</span><div><div class="wk k">ಆನೆ</div><div class="wr">aane — "aa-nay"</div><div class="we2">Elephant</div></div></div>
+            <div class="wcard" style="opacity:0.5;"><span style="font-size:22px;">🌤️</span><div><div class="wk k">ಆಕಾಶ</div><div class="wr">aakaasha</div><div class="we2">Sky</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div><div class="snum">3</div></div>
+        <div>
+          <h3>Scan a school book. Understand it immediately.</h3>
+          <p>Photograph any page from a Kannada textbook — a poem, a passage, homework. Akshara shows each word with English pronunciation and meaning so your child can read, understand, and memorise it.</p>
+          <div class="scan-demo"><span style="font-size:22px;">📸</span> Scan any Kannada text → pronunciation + meaning in English</div>
+          <div style="margin-top:9px;font-size:12px;color:var(--saffron);font-weight:600;">⏳ Coming soon</div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div><div class="snum">4</div></div>
+        <div>
+          <h3>Trace letters &amp; write — with real feedback</h3>
+          <p>Young learners trace Kannada letters in guided practice boxes. Smart validation gives a real ✅ or ❌. Stars and badges keep children motivated.</p>
+          <div class="trow">
+            <div class="tb e k">ಅ</div>
+            <div class="tb e k">ಅ</div>
+            <div class="tb d">✓</div>
+            <div class="tb d">✓</div>
+            <span style="margin-left:8px;font-size:13px;color:var(--muted);">+5 ⭐</span>
+          </div>
+        </div>
+      </div>
+      <div class="step fade-up">
+        <div><div class="snum">5</div></div>
+        <div>
+          <h3>Games &amp; quizzes make it stick</h3>
+          <p>Balloon Pop, word matching, and more — children reinforce what they've learned through play and ask to come back.</p>
+          <div class="games-row">
+            <span class="game-chip">🎈 Balloon Pop</span>
+            <span class="game-chip">🧩 Word Match</span>
+            <span class="game-chip">⭐ Stars &amp; Badges</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section feats" id="features">
+  <div class="section-wrap">
+    <div class="section-head fade-up">
+      <div class="eyebrow">Features</div>
+      <h2>Everything in one place.</h2>
+      <p class="sub">No more Google Translate for every word. No more juggling multiple apps. Akshara does it all.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="fc fade-up">
+        <span class="fci">🔤</span>
+        <h3>All Kannada vowels — consonants coming</h3>
+        <p>All 13 vowels live now with 10 words each. Full consonants (49 letters) arriving soon.</p>
+        <span class="ctag">Vowels live · Consonants soon</span>
+      </div>
+      <div class="fc fade-up">
+        <span class="fci">🔊</span>
+        <h3>Pronunciation + meaning, together</h3>
+        <p>Every letter and word: Kannada audio → English phonetic → English meaning. One tap. No app-switching.</p>
+      </div>
+      <div class="fc fade-up">
+        <span class="fci">📸</span>
+        <h3>Scan any Kannada text</h3>
+        <p>Point your camera at a school book, poem, or homework sheet and get pronunciation and meaning for every word.</p>
+        <span class="ctag">Coming soon</span>
+      </div>
+      <div class="fc fade-up">
+        <span class="fci">✍️</span>
+        <h3>Tracing with smart validation</h3>
+        <p>Guided writing practice with real ✅/❌ feedback. Children learn to write Kannada letters correctly from the start.</p>
+      </div>
+      <div class="fc fade-up">
+        <span class="fci">🎮</span>
+        <h3>Games &amp; quizzes</h3>
+        <p>Balloon Pop, word matching, and more. Learning stays joyful — children ask to keep going.</p>
+      </div>
+      <div class="fc fade-up">
+        <span class="fci">📊</span>
+        <h3>Parent progress dashboard</h3>
+        <p>Track which letters have been heard, traced, and mastered. Know exactly where your child is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="section safety fade-up">
+  <div class="section-wrap">
+    <div class="safety-inner">
+      <div class="eyebrow teal">Safety &amp; privacy</div>
+      <h2>Private by design. Safe for children.</h2>
+      <p class="sub">Akshara is built for young children. We take privacy seriously — no exceptions.</p>
+      <div class="safety-grid">
+        <div class="si"><div class="si-ico">🚫</div><div class="si-lbl">No data collected</div></div>
+        <div class="si"><div class="si-ico">✋</div><div class="si-lbl">No behaviour tracking</div></div>
+        <div class="si"><div class="si-ico">🖊️</div><div class="si-lbl">Tracing never stored</div></div>
+        <div class="si"><div class="si-ico">📵</div><div class="si-lbl">No ads</div></div>
+        <div class="si"><div class="si-ico">🔒</div><div class="si-lbl">No login required</div></div>
+      </div>
+      <p class="safety-note">Everything your child does on Akshara stays on your device. Period.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOR PARENTS -->
+<section class="section parents" id="parents">
+  <div class="section-wrap">
+    <div class="section-head fade-up">
+      <div class="eyebrow">For parents like you</div>
+      <h2>For every family where the will to learn Kannada is there — but the tools aren't.</h2>
+    </div>
+    <div class="pa-grid">
+      <div class="pac kn fade-up">
+        <div class="ptag">Families in Karnataka</div>
+        <h3>Non-Kannada speaking parents in Bengaluru &amp; beyond</h3>
+        <p>You live in Karnataka. Your child's school teaches Kannada or makes it compulsory. But at home the language is English, Hindi, Tamil, Bengali, or something else. Homework comes back and no one can help.</p>
+        <div class="scen">We moved to Bengaluru three years ago. My daughter's school insists on Kannada and I couldn't help with a single page of homework. Akshara changed that completely.</div>
+      </div>
+      <div class="pac ml fade-up">
+        <div class="ptag">Kannada diaspora worldwide</div>
+        <h3>Kannada families raising children abroad</h3>
+        <p>You're in London, San Jose, Dubai, or Sydney. You want your child to know the language — but school is in English, there's no Kannada environment, and nothing exists for young diaspora learners.</p>
+        <div class="scen">My husband isn't Kannada. He now sits with our son on Akshara every evening. They're both learning together — it's become their thing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMING -->
+<section class="section coming" id="coming">
+  <div class="section-wrap">
+    <div class="section-head fade-up">
+      <div class="eyebrow teal">Roadmap</div>
+      <h2>What's coming next.</h2>
+      <p class="sub">Shaped by real parents and teachers in Karnataka.</p>
+    </div>
+    <div class="coming-grid">
+      <div class="cc fade-up">
+        <span class="cstag s">Coming soon</span>
+        <div class="cci">🔠</div>
+        <h3>Full alphabet — vowels &amp; consonants</h3>
+        <p>All 49 letters of Kannada script with the same audio-first, meaning-first experience.</p>
+      </div>
+      <div class="cc fade-up">
+        <span class="cstag s">Coming soon</span>
+        <div class="cci">🙏</div>
+        <h3>Salutations &amp; everyday words</h3>
+        <p><span class="k">ನಮಸ್ಕಾರ, ಧನ್ಯವಾದ, ಹೇಗಿದ್ದೀರಾ</span> — greetings and phrases for home and school.</p>
+      </div>
+      <div class="cc fade-up">
+        <span class="cstag p">Planned</span>
+        <div class="cci">💬</div>
+        <h3>Parent requests — your words, your way</h3>
+        <p>Request specific words or family terms. Your <span class="k">ಅಜ್ಜಿ</span>, your vocabulary, your child.</p>
+      </div>
+      <div class="cc fade-up">
+        <span class="cstag p">Planned</span>
+        <div class="cci">🏫</div>
+        <h3>Validated with kindergarten teachers</h3>
+        <p>Aligning with Karnataka's school curriculum — reviewed by Kannada-medium teachers in Bengaluru.</p>
+      </div>
+    </div>
+    <div class="ccta fade-up">Have a feature idea or a word you'd love to see? <a href="#waitlist">Tell us →</a></div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="section testi fade-up">
+  <div class="section-wrap">
+    <span class="qm">"</span>
+    <p class="qt">I'm a Bengali and English-speaking mum in Bengaluru — Kannada was always the gap I worried about. Akshara turned homework time into something my child actually looks forward to.</p>
+    <div class="qa">
+      <div class="av">M</div>
+      <div>
+        <div class="an">Mixed-language mum</div>
+        <div class="as">Bengali &amp; English speaker · Bengaluru · Beta tester</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="section wls" id="waitlist">
+  <div class="section-wrap">
+    <div class="eyebrow">Limited beta spots</div>
+    <h2>Be the first to try it.</h2>
+    <p class="wsub">We're testing with 5 families this month. Want in? Leave your email and we'll reach out personally.</p>
+    <div class="wform" id="wlForm">
+      <input type="email" class="winp" id="emailInput" placeholder="your@email.com" autocomplete="email"/>
+      <button class="wbtn" onclick="submitWL()">Join Waitlist →</button>
+    </div>
+    <div class="wsuc" id="wlSuccess">🎉 You're on the list! We'll be in touch within 48 hours.</div>
+    <p class="wnote">No spam. Just one message when we're ready for you.</p>
+    <div class="wbadges">
+      <div class="wb"><span>🇮🇳</span> Made in Bengaluru</div>
+      <div class="wb"><span>🆓</span> Free for beta testers</div>
+      <div class="wb"><span>👨‍👩‍👧</span> Family-first design</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="fl">Akshara · Learn <span class="k" style="color:var(--saffron);">ಕನ್ನಡ</span> · Made in Bengaluru · 2025</div>
+      <div class="flt">Teaching the next generation of Kannadigas.</div>
+    </div>
+    <div class="flinks">
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const vd = {
+  a:  { e:"👩", k:"ಅಮ್ಮ",   r:'amma — "um-maa"',      eng:"Mother"   },
+  aa: { e:"🐘", k:"ಆನೆ",    r:'aane — "aa-nay"',      eng:"Elephant" },
+  i:  { e:"🐜", k:"ಇರುವೆ",  r:'iruve — "i-roo-vay"',  eng:"Ant"      },
+  ee: { e:"🏊", k:"ಈಜು",    r:'eelu — "ee-joo"',      eng:"Swim"     },
+  u:  { e:"🧂", k:"ಉಪ್ಪು",  r:'uppu — "up-poo"',      eng:"Salt"     },
+};
+
+function selectV(k, el) {
+  document.querySelectorAll('.vp').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const d = vd[k], c = document.getElementById('wcard');
+  c.style.animation = 'none'; c.offsetHeight; c.style.animation = 'fadeIn .3s ease';
+  document.getElementById('we').textContent = d.e;
+  document.getElementById('wk').textContent = d.k;
+  document.getElementById('wro').textContent = d.r;
+  document.getElementById('weng').textContent = d.eng;
+}
+
+function submitWL() {
+  const v = document.getElementById('emailInput').value.trim();
+  if (!v || !v.includes('@')) {
+    document.getElementById('emailInput').style.borderColor = '#EF4444';
+    setTimeout(() => document.getElementById('emailInput').style.borderColor = '', 1500);
+    return;
+  }
+  console.log('Waitlist signup:', v);
+  document.getElementById('wlForm').style.display = 'none';
+  document.getElementById('wlSuccess').style.display = 'block';
+  document.querySelector('.wnote').style.display = 'none';
+}
+
+document.getElementById('emailInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitWL();
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fade-up, .step').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
