@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Product Management, AI PM and GTM Resume">
+  <title>Product AI GTM Resume</title>
+  <style>
+    :root {
+      --bg: #f4fff8;
+      --card: rgba(255, 255, 255, 0.95);
+      --card-strong: rgba(255, 255, 255, 1);
+      --text: #163226;
+      --muted: #4f6f61;
+      --accent: #169c5f;
+      --accent-blue: #46b97a;
+      --accent-gold: #169c5f;
+      --border: rgba(22, 156, 95, 0.18);
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(22, 156, 95, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(70, 185, 122, 0.10), transparent 32%),
+        linear-gradient(135deg, #f7fffa 0%, #eefbf2 50%, #f8fffb 100%);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 28px;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.09);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(240,255,245,0.95));
+      box-shadow: 0 24px 70px var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .hero-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.75fr);
+      gap: 28px;
+      padding: 38px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 78px);
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+      margin-bottom: 18px;
+    }
+
+    .headline {
+      color: #335b48;
+      font-size: 19px;
+      max-width: 850px;
+      margin-bottom: 22px;
+    }
+
+    .headline strong {
+      color: #0f2c1f;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip,
+    .pill {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      color: #184230;
+      font-size: 13px;
+    }
+
+    .chip {
+      padding: 8px 11px;
+    }
+
+    .pill {
+      padding: 8px 10px;
+    }
+
+    .contact-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .contact-card h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .contact-item {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding: 0 38px 38px;
+    }
+
+    .signal {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(22, 156, 95, 0.05);
+      padding: 17px;
+    }
+
+    .signal-number {
+      font-size: 30px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .signal p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.55fr);
+      gap: 20px;
+    }
+
+    .section {
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--card);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .section h2 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+
+    .section h3 {
+      font-size: 20px;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .role-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 9px;
+    }
+
+    li {
+      position: relative;
+      padding-left: 18px;
+      color: #335b48;
+      font-size: 14.5px;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+    }
+
+    .quote {
+      font-size: 18px;
+      color: #163226;
+      letter-spacing: -0.02em;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .matrix {
+      display: grid;
+      gap: 12px;
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 0.85fr 1.35fr;
+      gap: 14px;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(22, 156, 95, 0.04);
+    }
+
+    .matrix-row strong {
+      color: #ffffff;
+    }
+
+    .matrix-row span {
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-item {
+      border-left: 1px solid rgba(101, 244, 213, 0.38);
+      padding-left: 18px;
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.055);
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .project-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .tag {
+      white-space: nowrap;
+      font-size: 11px;
+      color: var(--accent-gold);
+      border: 1px solid rgba(255, 204, 112, 0.4);
+      padding: 5px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 16px;
+    }
+
+    body.compact .section {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    body.compact li {
+      font-size: 13.5px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 16px;
+      }
+
+      .hero-main,
+      .layout,
+      .signal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        color: #111827;
+        padding: 0;
+      }
+
+      .topbar {
+        display: none;
+      }
+
+      .hero,
+      .section,
+      .contact-card,
+      .signal,
+      .project-card,
+      .matrix-row {
+        background: #ffffff !important;
+        color: #111827 !important;
+        box-shadow: none !important;
+        border-color: #d1d5db !important;
+        break-inside: avoid;
+      }
+
+      .headline,
+      li,
+      .role-meta,
+      .contact-item,
+      .matrix-row span,
+      .footer-note,
+      .signal p {
+        color: #374151 !important;
+      }
+
+      .kicker,
+      .section h2,
+      .signal-number {
+        color: #0f766e !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div class="badge"><span class="badge-dot"></span> Futuristic Product Resume | AI PM | GTM | Payments</div>
+      <div class="button-row">
+        <button type="button" id="compactBtn">Toggle Compact</button>
+        <button type="button" id="printBtn">Print / Save PDF</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div>
+          <div class="kicker">Product Management | AI Product | GTM | B2B Payments</div>
+          <h1>Your Name</h1>
+          <p class="headline">
+            Product and GTM professional with <strong>15+ years across payments, QA leadership, technical delivery and market-entry work</strong>, now building a stronger path into <strong>Senior Product Management, AI PM and B2B GTM leadership</strong>.
+          </p>
+          <div class="chips">
+            <span class="chip">Technical Product Management</span>
+            <span class="chip">AI PM and Prototyping</span>
+            <span class="chip">B2B SaaS GTM</span>
+            <span class="chip">Payments and Fintech</span>
+            <span class="chip">EWA, AP/AR and PG</span>
+            <span class="chip">0 to 1 Market Builder</span>
+          </div>
+        </div>
+
+        <aside class="contact-card">
+          <div>
+            <h2>Contact</h2>
+            <p class="contact-item">Bengaluru, India | Remote / Hybrid Preferred</p>
+            <p class="contact-item">email@example.com</p>
+            <p class="contact-item">+91 XXXXX XXXXX</p>
+            <p class="contact-item">LinkedIn: linkedin.com/in/your-profile</p>
+          </div>
+          <div>
+            <h2>Target Roles</h2>
+            <p class="contact-item">Senior Product Manager | Technical Product Manager | AI Product Manager | Product and GTM Manager | Market Expansion Lead</p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="signal-grid">
+        <div class="signal"><div class="signal-number">15+</div><p>Years across payments, quality, delivery, product thinking and GTM.</p></div>
+        <div class="signal"><div class="signal-number">0-1</div><p>Market-building exposure across India, Malaysia, Vietnam and APAC contexts.</p></div>
+        <div class="signal"><div class="signal-number">B2B</div><p>Deep focus on payment gateway, AP/AR automation, HRMS-led EWA and partner ecosystems.</p></div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside>
+        <section class="section">
+          <h2>Product Identity</h2>
+          <p class="quote">A discovery-first product manager who connects customer pain, fintech infrastructure, partner GTM and AI-assisted prototyping into practical market outcomes.</p>
+        </section>
+
+        <section class="section">
+          <h2>Core Strengths</h2>
+          <div class="pill-list">
+            <span class="pill">Product Discovery</span>
+            <span class="pill">PRDs and User Stories</span>
+            <span class="pill">AI Prototyping</span>
+            <span class="pill">Partner GTM</span>
+            <span class="pill">Market Research</span>
+            <span class="pill">Payment Integrations</span>
+            <span class="pill">API Deep Dives</span>
+            <span class="pill">Pilot Design</span>
+            <span class="pill">PMF Validation</span>
+            <span class="pill">Sales Enablement</span>
+            <span class="pill">Quality Strategy</span>
+            <span class="pill">Stakeholder Alignment</span>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Domain Stack</h2>
+          <div class="matrix">
+            <div class="matrix-row"><strong>Payments</strong><span>Payment gateway, processor integrations, card tokenization, chargebacks, merchant management and hosted payment page flows.</span></div>
+            <div class="matrix-row"><strong>B2B Fintech</strong><span>AP automation, AR automation, EIPP, B2B collections, employer-led payouts and partner integrations.</span></div>
+            <div class="matrix-row"><strong>HR Fintech</strong><span>Earned Wage Access, HRMS onboarding, attendance and payroll dependencies, employee payout flows.</span></div>
+            <div class="matrix-row"><strong>AI PM</strong><span>Discovery-first AI usage, prototype-led user research, AI-assisted PRDs, workflow automation and product thinking acceleration.</span></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Tools and Methods</h2>
+          <ul>
+            <li>Jira, Confluence, Miro, FigJam, product discovery canvases and structured PRDs.</li>
+            <li>RICE, ICE, Kano, JTBD, Mom Test, UXR synthesis and pilot-readiness frameworks.</li>
+            <li>API walkthroughs, workflow mapping, integration scope definition and UAT strategy.</li>
+            <li>Claude, AI Studio and prototyping tools for fast concept validation and demo communication.</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2>Credentials</h2>
+          <ul>
+            <li>Certified Scrum Product Owner - CSPO.</li>
+            <li>Product Management PG Certification.</li>
+            <li>HelloPM product management learning track - discovery, PRD, UXR and PMF assignments.</li>
+          </ul>
+        </section>
+      </aside>
+
+      <section>
+        <section class="section">
+          <h2>Executive Summary</h2>
+          <ul>
+            <li>Technical Product Manager with strong payment infrastructure depth and a growing product leadership arc across discovery, GTM, partnerships and PMF validation.</li>
+            <li>Currently shaping EWA India market entry through HRMS partnerships, payout partner integration, pilot-focused GTM, ICP definition, sales enablement and market feedback loops.</li>
+            <li>Experienced in translating ambiguous business opportunities into clear product flows, integration scopes, partner responsibilities, roadmap choices and leadership-ready narratives.</li>
+            <li>Brings a rare blend of QA rigor, payment-domain depth, customer discovery, stakeholder communication and practical AI-enabled prototyping for faster product validation.</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2>Professional Experience</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <h3>Technical Product Manager - GTM and Market Development</h3>
+              <div class="role-meta">NTT DATA Payment Services | India / APAC | Current</div>
+              <ul>
+                <li>Shaping the India GTM and PMF validation strategy for Earned Wage Access by connecting employer pain points, HRMS partnership routes, payout capabilities and enterprise pilot design.</li>
+                <li>Driving partner-led GTM with HRMS and payout partners, including uKnowva, OSource and OmniCard-oriented discussions across referral, co-GTM, integration and pilot-readiness models.</li>
+                <li>Defined product and integration trade-offs for EWA payout models, including wallet-led disbursement, bank file generation, SDK dependency, SSO, employee import and employer admin workflows.</li>
+                <li>Created sales enablement narratives for CHRO, CFO and enterprise sales audiences, positioning EWA as financial wellness, employer branding and retention support rather than only salary advance.</li>
+                <li>Supported B2B AP/AR market-entry work for Malaysia, including market research, accounting software ecosystem understanding, payment gateway integration thinking and partner discovery.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <h3>Senior QA / Payment Gateway Quality Leader</h3>
+              <div class="role-meta">Payments Domain | Prior Role</div>
+              <ul>
+                <li>Led quality strategy and delivery assurance for payment gateway products, gaining deep working knowledge of payment flows, merchant operations, integrations and risk-sensitive release processes.</li>
+                <li>Worked across technical, operational and business teams to improve release confidence, clarify acceptance criteria and reduce ambiguity in complex payment and merchant-facing workflows.</li>
+                <li>Built the foundation for product management through strong systems thinking, edge-case analysis, user-flow validation, stakeholder coordination and payment-domain subject matter expertise.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Selected Product and GTM Work</h2>
+
+          <div class="project-card">
+            <div class="project-title"><h3>Earned Wage Access - India PMF and GTM Engine</h3><span class="tag">Flagship</span></div>
+            <ul>
+              <li>Built a pilot-first GTM approach using HRMS partners, direct enterprise PG merchants and payout partner integration as parallel market-entry paths.</li>
+              <li>Defined OKR thinking around client company funnel, active usage, HRMS partnerships, integration lead time and PMF feedback loops.</li>
+              <li>Created leadership-ready positioning: phased rollout, controlled disbursement, payment-grade foundations and partner-sourced pilot opportunities.</li>
+            </ul>
+          </div>
+
+          <div class="project-card">
+            <div class="project-title"><h3>OmniCard EWA Integration Model</h3><span class="tag">Product + Partner</span></div>
+            <ul>
+              <li>Mapped employer admin, employee payout, SDK, wallet, fee settlement and UX ownership responsibilities between EWA team and OmniCard.</li>
+              <li>Compared redirect, embedded and white-label models across time-to-market, UX continuity, data ownership, operational dependency and partner readiness.</li>
+              <li>Clarified that OmniCard acts as a technical enabler while EWA team shapes GTM, sales enablement, pilot offer and commercial positioning.</li>
+            </ul>
+          </div>
+
+          <div class="project-card">
+            <div class="project-title"><h3>AP/AR Automation - Malaysia and APAC Exploration</h3><span class="tag">Market Entry</span></div>
+            <ul>
+              <li>Studied B2B AP/AR automation opportunities across accounting software, payment gateways, invoice workflows and enterprise settlement needs.</li>
+              <li>Translated market-entry ambiguity into scope, integration direction, partner qualification questions and product-value framing for internal alignment.</li>
+            </ul>
+          </div>
+
+          <div class="project-card">
+            <div class="project-title"><h3>AI-Assisted Product Discovery and Prototyping</h3><span class="tag">AI PM</span></div>
+            <ul>
+              <li>Uses AI tools to accelerate PRD drafting, product teardown, landing page testing, user research synthesis, prototype generation and stakeholder storytelling.</li>
+              <li>Applies discovery-first principles: problem validation, Mom Test interviewing, JTBD framing, prototype-led UXR and avoiding premature solution commitment.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Role Fit Narrative</h2>
+          <div class="matrix">
+            <div class="matrix-row"><strong>For Senior PM roles</strong><span>Strong domain depth, structured discovery, stakeholder management, PRD thinking and product strategy across complex B2B payment workflows.</span></div>
+            <div class="matrix-row"><strong>For AI PM roles</strong><span>Practical AI adoption for product discovery, prototyping, UXR, workflow acceleration and PM productivity rather than superficial AI positioning.</span></div>
+            <div class="matrix-row"><strong>For GTM/Product Growth roles</strong><span>Experience shaping ICP, partner-led GTM, pilot offers, sales enablement, event outreach, PMF loops and market-entry narratives.</span></div>
+            <div class="matrix-row"><strong>For Fintech roles</strong><span>Payments, AP/AR, EWA, wallet payouts, payment gateway integrations and B2B ecosystem understanding with quality and risk awareness.</span></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Future Direction</h2>
+          <p class="quote">To grow into a Product and GTM leader for fintech and AI-enabled B2B products - combining product discovery, market expansion, payment infrastructure and practical AI workflows to build products that move from concept to pilot to scalable revenue.</p>
+        </section>
+      </section>
+    </div>
+
+    <p class="footer-note">Replace placeholders with exact contact details, company dates, measurable outcomes and portfolio links before final use.</p>
+  </main>
+
+  <script>
+    (function () {
+      var compactBtn = document.getElementById('compactBtn');
+      var printBtn = document.getElementById('printBtn');
+
+      if (compactBtn) {
+        compactBtn.addEventListener('click', function () {
+          document.body.classList.toggle('compact');
+        });
+      }
+
+      if (printBtn) {
+        printBtn.addEventListener('click', function () {
+          window.print();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
