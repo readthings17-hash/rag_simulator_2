@@ -1,388 +1,1027 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RAG Simulator - Interactive Learning</title>
-  <style>
-    :root {
-      --bg: #f6faf8;
-      --card: #ffffff;
-      --text: #13261f;
-      --muted: #64756e;
-      --soft: #eef7f2;
-      --green: #16885a;
-      --green-dark: #0f6d47;
-      --green-light: #dff3e9;
-      --blue: #2f6fed;
-      --amber: #b7791f;
-      --red: #c2410c;
-      --border: #dbe7e1;
-      --shadow: 0 18px 50px rgba(16, 66, 45, 0.10);
-      --radius: 22px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Pipeline Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface2: #f4f3ef;
+    --border: #e8e6e0;
+    --border2: #d4d1c8;
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9e9b93;
+    --accent: #1a1917;
+    --purple: #5b4fcf;
+    --purple-bg: #eeedfc;
+    --purple-border: #c5c0f0;
+    --teal: #0f7b6c;
+    --teal-bg: #e4f5f2;
+    --teal-border: #a8ddd7;
+    --amber: #9a6800;
+    --amber-bg: #fef7e6;
+    --amber-border: #f0d080;
+    --coral: #c54a2a;
+    --coral-bg: #fdf0ec;
+    --coral-border: #f0b8a4;
+    --green: #2d7a3a;
+    --green-bg: #edf7ef;
+    --green-border: #a8d9b0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
 
-    body {
-      min-height: 100vh;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(22, 136, 90, 0.10), transparent 28%),
-        radial-gradient(circle at 95% 12%, rgba(47, 111, 237, 0.08), transparent 26%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.55;
-      padding: 28px;
-    }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
 
-    .app {
-      max-width: 1240px;
-      margin: 0 auto;
-    }
+  /* ── Layout ── */
+  .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 20px;
-      align-items: stretch;
-      margin-bottom: 20px;
-    }
+  /* ── Sidebar ── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .hero-card,
-    .side-card,
-    .panel {
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
+  .sidebar-logo {
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .wordmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+  .sidebar-logo .sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 2px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
 
-    .hero-card {
-      padding: 34px;
-      overflow: hidden;
-      position: relative;
-    }
+  .sidebar-section { padding: 20px 24px 8px; }
+  .sidebar-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
 
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      border-radius: 50%;
-      background: rgba(22, 136, 90, 0.08);
-      right: -70px;
-      top: -80px;
-    }
+  .step-nav { list-style: none; }
+  .step-nav li { margin-bottom: 2px; }
+  .step-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+  .step-nav-btn:hover { background: var(--surface2); color: var(--text); }
+  .step-nav-btn.active { background: var(--accent); color: #fff; }
+  .step-nav-btn.done:not(.active) { color: var(--green); }
+  .step-nav-btn .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--surface2);
+    color: var(--text2);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .step-nav-btn.active .step-num { background: rgba(255,255,255,0.2); color: #fff; }
+  .step-nav-btn.done:not(.active) .step-num { background: var(--green-bg); color: var(--green); }
 
-    .eyebrow {
-      color: var(--green);
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
+  .sidebar-diagram {
+    margin: 16px 24px 0;
+    padding: 16px;
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .sidebar-diagram .diag-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+  .diag-flow { display: flex; flex-direction: column; gap: 0; }
+  .diag-node {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .diag-node:hover { opacity: 0.85; }
+  .diag-node.n-gray  { background: var(--surface); border-color: var(--border); color: var(--text2); }
+  .diag-node.n-purple{ background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+  .diag-node.n-amber { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
+  .diag-node.n-teal  { background: var(--teal-bg); border-color: var(--teal-border); color: var(--teal); }
+  .diag-node.n-green { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+  .diag-node.active-diag { box-shadow: 0 0 0 2px currentColor; }
+  .diag-arrow { text-align: center; font-size: 10px; color: var(--text3); line-height: 1.4; }
+  .diag-node .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.6; flex-shrink: 0; }
 
-    h1 {
-      font-size: clamp(36px, 6vw, 64px);
-      line-height: 0.95;
-      letter-spacing: -0.055em;
-      margin-bottom: 16px;
-      max-width: 820px;
-    }
+  /* ── Main ── */
+  .main { padding: 40px 48px; max-width: 900px; }
 
-    .hero-card p {
-      color: var(--muted);
-      font-size: 18px;
-      max-width: 820px;
-      margin-bottom: 22px;
-    }
+  .step-panel { display: none; animation: fadeUp 0.25s ease; }
+  .step-panel.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .chips {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+  .panel-header { margin-bottom: 28px; }
+  .panel-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); }
+  .tag-teal   { background: var(--teal-bg); color: var(--teal); }
+  .tag-amber  { background: var(--amber-bg); color: var(--amber); }
+  .tag-gray   { background: var(--surface2); color: var(--text2); }
+  .tag-green  { background: var(--green-bg); color: var(--green); }
 
-    .chip {
-      background: var(--soft);
-      color: var(--green-dark);
-      border: 1px solid var(--green-light);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-    }
+  .panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .panel-desc { color: var(--text2); font-size: 15px; line-height: 1.65; max-width: 600px; }
 
-    .side-card {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-    }
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 14px;
+  }
 
-    .metric {
-      padding: 16px;
-      background: var(--soft);
-      border-radius: 18px;
-      border: 1px solid var(--green-light);
-    }
+  .insight-box {
+    display: flex; gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+  .insight-box.purple { background: var(--purple-bg); border: 1px solid var(--purple-border); color: #3d3490; }
+  .insight-box.amber  { background: var(--amber-bg);  border: 1px solid var(--amber-border);  color: #7a5200; }
+  .insight-box.teal   { background: var(--teal-bg);   border: 1px solid var(--teal-border);   color: #0a5e52; }
+  .insight-box.green  { background: var(--green-bg);  border: 1px solid var(--green-border);  color: #1e5a28; }
+  .insight-box .icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
 
-    .metric strong {
-      display: block;
-      font-size: 26px;
-      color: var(--green-dark);
-      margin-bottom: 3px;
-    }
+  /* ── Form elements ── */
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  textarea, input[type=text] {
+    width: 100%; padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    background: var(--surface); color: var(--text);
+    resize: vertical; line-height: 1.6;
+    transition: border-color 0.15s;
+  }
+  textarea:focus, input[type=text]:focus { outline: none; border-color: var(--accent); }
 
-    .metric span {
-      color: var(--muted);
-      font-size: 13px;
-    }
+  .slider-row { display: flex; align-items: center; gap: 14px; }
+  .slider-row label { flex: 1; margin: 0; }
+  input[type=range] {
+    width: 140px; accent-color: var(--accent); cursor: pointer;
+  }
+  .slider-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    background: var(--surface2); color: var(--text);
+    padding: 3px 8px; border-radius: 5px;
+    min-width: 56px; text-align: center;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 0.78fr 1.22fr;
-      gap: 20px;
-      align-items: start;
-    }
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 20px; border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; border: none; transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+  }
+  .btn-primary:hover { background: #333; }
+  .btn-secondary {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border2);
+  }
+  .btn-secondary:hover { background: var(--surface2); }
+  .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
 
-    .panel {
-      padding: 24px;
-      margin-bottom: 20px;
-    }
+  /* ── Chunks ── */
+  .chunks-grid { display: flex; flex-direction: column; gap: 10px; }
+  .chunk-card {
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-size: 13px; line-height: 1.6; color: var(--text2);
+    transition: border-color 0.15s;
+    cursor: default;
+  }
+  .chunk-card:hover { border-color: var(--border2); }
+  .chunk-meta {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 7px;
+  }
+  .chunk-id {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    background: var(--surface2); color: var(--text2);
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .chunk-chars { font-size: 11px; color: var(--text3); }
+  .overlap-badge {
+    font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+    background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border);
+  }
 
-    .panel h2 {
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 0.10em;
-      color: var(--green);
-      margin-bottom: 14px;
-    }
+  /* ── Embeddings ── */
+  .embed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+  .embed-card {
+    padding: 14px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .embed-label { font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 10px; font-family: 'DM Mono', monospace; }
+  .vec-bars { display: flex; align-items: flex-end; gap: 3px; height: 36px; }
+  .vec-bar {
+    flex: 1; border-radius: 2px 2px 0 0;
+    background: var(--purple);
+    transition: height 0.4s ease;
+    min-height: 2px;
+  }
 
-    .panel h3 {
-      font-size: 20px;
-      margin-bottom: 8px;
-      letter-spacing: -0.025em;
-    }
+  /* ── DB Table ── */
+  .db-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    padding: 10px 14px; text-align: left;
+    background: var(--surface2); font-weight: 600;
+    font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text3); border-bottom: 1px solid var(--border);
+  }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface2); }
+  .mono { font-family: 'DM Mono', monospace; font-size: 11px; }
 
-    .panel p,
-    .panel li {
-      color: var(--muted);
-      font-size: 14.5px;
-    }
+  /* ── Query results ── */
+  .result-card {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .result-card.best { border-color: var(--teal-border); background: var(--teal-bg); }
+  .result-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .result-title { font-size: 13px; font-weight: 600; color: var(--text2); }
+  .result-card.best .result-title { color: var(--teal); }
+  .score-pill {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 3px 9px; border-radius: 20px;
+    background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border);
+  }
+  .result-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
 
-    ul {
-      display: grid;
-      gap: 8px;
-      list-style: none;
-    }
+  /* ── Prompt / Answer ── */
+  .prompt-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
+    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7;
+    color: var(--text2); white-space: pre-wrap; margin-bottom: 20px;
+    max-height: 280px; overflow-y: auto;
+  }
+  .answer-box {
+    background: var(--surface); border: 1px solid var(--green-border);
+    border-radius: var(--radius-lg); padding: 20px 22px;
+    font-size: 14px; line-height: 1.75; color: var(--text);
+  }
 
-    li {
-      position: relative;
-      padding-left: 18px;
-    }
+  /* ── Stats row ── */
+  .stats-row { display: flex; gap: 14px; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1; padding: 16px 18px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .stat-val { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: var(--text3); }
 
-    li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 9px;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-    }
+  /* ── Progress bar ── */
+  .progress-wrap { margin-bottom: 32px; }
+  .progress-track {
+    height: 3px; background: var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%; background: var(--accent);
+    border-radius: 2px; transition: width 0.4s ease;
+  }
+  .progress-labels {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text3); margin-top: 6px;
+  }
 
-    .diagram-wrap {
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
+  /* ── Diagram panel ── */
+  .diagram-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 20px; }
+  .diagram-panel svg { width: 100%; height: auto; display: block; }
 
-    .diagram {
-      min-width: 760px;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-      align-items: stretch;
-      position: relative;
-    }
+  /* ── Tooltip ── */
+  .tooltip {
+    position: fixed; background: var(--text); color: #fff;
+    font-size: 12px; padding: 6px 10px; border-radius: 6px;
+    pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    max-width: 220px; line-height: 1.4; z-index: 100;
+  }
 
-    .node {
-      border: 1px solid var(--border);
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 15px;
-      min-height: 126px;
-      position: relative;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
+  /* ── Misc ── */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .status { font-size: 13px; color: var(--teal); font-weight: 500; min-height: 22px; margin: 10px 0; }
+  .empty-state { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
+  .highlight { background: #fff3b0; border-radius: 2px; padding: 0 2px; }
 
-    .node:hover,
-    .node.active {
-      transform: translateY(-2px);
-      border-color: rgba(22, 136, 90, 0.45);
-      box-shadow: 0 12px 26px rgba(22, 136, 90, 0.12);
-      background: #fafffc;
-    }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; }
+    .main { padding: 24px 20px; }
+    .two-col { grid-template-columns: 1fr; }
+    .stats-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
 
-    .node-number {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--green);
-      color: #ffffff;
-      font-weight: 800;
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
+<div class="tooltip" id="tooltip"></div>
 
-    .node h4 {
-      font-size: 15px;
-      margin-bottom: 5px;
-    }
+<div class="app">
 
-    .node p {
-      font-size: 12.5px;
-      color: var(--muted);
-    }
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="wordmark">RAG Simulator</div>
+    <div class="sub">Retrieval-Augmented Generation</div>
+  </div>
 
-    .arrow {
-      position: absolute;
-      right: -12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px;
-      height: 2px;
-      background: var(--green-light);
-      z-index: 2;
-    }
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Ingestion pipeline</div>
+    <ul class="step-nav">
+      <li><button class="step-nav-btn active" onclick="goStep(0)" id="nav-0">
+        <span class="step-num" id="sn-0">1</span> Document chunking
+      </button></li>
+      <li><button class="step-nav-btn" onclick="goStep(1)" id="nav-1">
+        <span class="step-num" id="sn-1">2</span> Vector embeddings
+      </button></li>
+      <li><button class="step-nav-btn" onclick="goStep(2)" id="nav-2">
+        <span class="step-num" id="sn-2">3</span> Vector database
+      </button></li>
+    </ul>
+  </div>
 
-    .arrow::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: -5px;
-      border-left: 8px solid var(--green-light);
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-    }
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Retrieval pipeline</div>
+    <ul class="step-nav">
+      <li><button class="step-nav-btn" onclick="goStep(3)" id="nav-3">
+        <span class="step-num" id="sn-3">4</span> Query embedding
+      </button></li>
+      <li><button class="step-nav-btn" onclick="goStep(4)" id="nav-4">
+        <span class="step-num" id="sn-4">5</span> Similarity search
+      </button></li>
+      <li><button class="step-nav-btn" onclick="goStep(5)" id="nav-5">
+        <span class="step-num" id="sn-5">6</span> Re-ranking
+      </button></li>
+    </ul>
+  </div>
 
-    .simulator {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Generation pipeline</div>
+    <ul class="step-nav">
+      <li><button class="step-nav-btn" onclick="goStep(6)" id="nav-6">
+        <span class="step-num" id="sn-6">7</span> Prompt composition
+      </button></li>
+      <li><button class="step-nav-btn" onclick="goStep(7)" id="nav-7">
+        <span class="step-num" id="sn-7">8</span> LLM answer
+      </button></li>
+    </ul>
+  </div>
 
-    .query-box {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-    }
+  <div class="sidebar-section" style="flex:1">
+    <div class="sidebar-section-label">Pipeline map</div>
+    <div class="sidebar-diagram">
+      <div class="diag-flow" id="diag-flow">
+        <div class="diag-node n-gray active-diag" onclick="goStep(0)" id="dn-0"><span class="dot"></span>Chunk document</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-purple" onclick="goStep(1)" id="dn-1"><span class="dot"></span>Embed chunks</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-purple" onclick="goStep(2)" id="dn-2"><span class="dot"></span>Store vectors</div>
+        <div class="diag-arrow">↓ ↕ query</div>
+        <div class="diag-node n-purple" onclick="goStep(3)" id="dn-3"><span class="dot"></span>Embed query</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-purple" onclick="goStep(4)" id="dn-4"><span class="dot"></span>ANN search</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-amber" onclick="goStep(5)" id="dn-5"><span class="dot"></span>Re-rank</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-teal" onclick="goStep(6)" id="dn-6"><span class="dot"></span>Compose prompt</div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-node n-green" onclick="goStep(7)" id="dn-7"><span class="dot"></span>Generate answer</div>
+      </div>
+    </div>
+  </div>
+</aside>
 
-    input {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 15px;
-      font-size: 15px;
-      outline: none;
-      color: var(--text);
-      background: #ffffff;
-    }
+<!-- ── Main content ── -->
+<main class="main">
 
-    input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 4px rgba(22, 136, 90, 0.10);
-    }
+  <!-- Progress bar -->
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-bar" id="progress-bar" style="width:12.5%"></div></div>
+    <div class="progress-labels"><span>Start</span><span id="progress-label">Step 1 of 8</span><span>Complete</span></div>
+  </div>
 
-    button {
-      border: none;
-      border-radius: 16px;
-      background: var(--green);
-      color: #ffffff;
-      padding: 14px 18px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: 0.2s ease;
-      white-space: nowrap;
-    }
+  <!-- ══ STEP 0: Chunking ══ -->
+  <div class="step-panel active" id="panel-0">
+    <div class="panel-header">
+      <div class="panel-tag tag-gray">Step 1 · Ingestion</div>
+      <h1 class="panel-title">Document chunking</h1>
+      <p class="panel-desc">Paste any document below. The pipeline splits it into overlapping chunks so no meaning is lost at chunk boundaries. Overlap ensures that sentences spanning two chunks are still findable.</p>
+    </div>
 
-    button:hover {
-      background: var(--green-dark);
-      transform: translateY(-1px);
-    }
+    <div class="insight-box purple">
+      <span class="icon">💡</span>
+      <span><strong>Why chunk?</strong> LLMs have a limited context window. Chunking lets you store large documents and retrieve only the relevant pieces at query time — not the entire document.</span>
+    </div>
 
-    .output-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
+    <div class="card">
+      <div class="card-title">Document input</div>
+      <textarea id="doc-input" rows="6" placeholder="Paste your document here...">First principles thinking is a method of solving problems by breaking them down to their most fundamental truths. Rather than reasoning by analogy — copying what others have done — you start from scratch. Elon Musk famously applied this to rocketry. Instead of buying rockets at $65 million each, he asked: what are rockets actually made of? Aluminum alloys, titanium, copper, carbon fiber. He priced those raw materials and found they cost about 2% of the quoted price. SpaceX now builds rockets for a fraction of the industry cost. The same thinking applies to product management. A seasoned PM doesn't ask "what did our competitor ship?" but "what does the user actually need to accomplish?" First principles force you to question assumptions and rebuild from evidence. This is harder than it sounds. Our brains are pattern-matching machines; analogy is the path of least resistance. But when you want to break through to something genuinely new, you need to strip away inherited assumptions and ask: what is actually true here?</textarea>
 
-    .output-card {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 15px;
-      background: #ffffff;
-    }
+      <div class="divider"></div>
 
-    .output-card strong {
-      display: block;
-      color: var(--green-dark);
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+      <div class="two-col" style="margin-bottom:16px">
+        <div>
+          <label>Chunk size</label>
+          <div class="slider-row">
+            <input type="range" min="100" max="600" value="300" step="50" id="chunk-size" oninput="document.getElementById('csv').textContent=this.value+' chars';state.chunkSize=+this.value">
+            <span class="slider-val" id="csv">300 chars</span>
+          </div>
+        </div>
+        <div>
+          <label>Overlap</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="150" value="60" step="10" id="overlap" oninput="document.getElementById('ov').textContent=this.value+' chars';state.overlap=+this.value">
+            <span class="slider-val" id="ov">60 chars</span>
+          </div>
+        </div>
+      </div>
 
-    .output-card p {
-      font-size: 13.5px;
-      color: var(--muted);
-    }
+      <button class="btn btn-primary" onclick="doChunk()">Chunk document →</button>
+      <div class="status" id="status-0"></div>
+    </div>
 
-    .doc-list {
-      display: grid;
-      gap: 10px;
-    }
+    <div id="chunk-output"></div>
 
-    .doc {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 10px;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      background: #ffffff;
-    }
+    <div class="btn-group" id="nav-chunk" style="display:none">
+      <button class="btn btn-primary" onclick="goStep(1)">Next: Create embeddings →</button>
+    </div>
+  </div>
 
-    .doc-score {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--soft);
-      color: var(--green-dark);
-      font-weight: 900;
-      font-size: 13px;
-    }
+  <!-- ══ STEP 1: Embeddings ══ -->
+  <div class="step-panel" id="panel-1">
+    <div class="panel-header">
+      <div class="panel-tag tag-purple">Step 2 · Ingestion</div>
+      <h1 class="panel-title">Vector embeddings</h1>
+      <p class="panel-desc">Each chunk is converted into a high-dimensional vector of numbers. Semantically similar text lands close together in this vector space — that's what makes search work.</p>
+    </div>
 
-    .doc-title {
-      font-weight: 800;
-      color: var(--text);
-      font-size: 14px;
-    }
+    <div class="insight-box purple">
+      <span class="icon">🔢</span>
+      <span><strong>Real embeddings</strong> use models like <em>text-embedding-3-small</em> (OpenAI) or <em>embed-english-v3</em> (Cohere). Here we simulate 8-dimensional vectors based on keyword presence to illustrate the concept.</span>
+    </div>
 
-    .doc-text {
-      color: var(--muted);
-      font-size: 12.5px;
+    <div class="stats-row" id="embed-stats"></div>
+
+    <div class="card">
+      <div class="card-title">Embedding vectors (simulated 8-dim)</div>
+      <div class="embed-grid" id="embed-output">
+        <div class="empty-state">Run Step 1 first to generate chunks.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="doEmbed()">Generate embeddings →</button>
+    <div class="status" id="status-1"></div>
+
+    <div class="btn-group" id="nav-embed" style="display:none">
+      <button class="btn btn-secondary" onclick="goStep(0)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(2)">Next: Save to vector DB →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: Vector DB ══ -->
+  <div class="step-panel" id="panel-2">
+    <div class="panel-header">
+      <div class="panel-tag tag-purple">Step 3 · Ingestion</div>
+      <h1 class="panel-title">Vector database</h1>
+      <p class="panel-desc">Embeddings are stored in a vector database alongside the original chunk text. At query time, the DB performs approximate nearest-neighbour (ANN) search — orders of magnitude faster than brute-force.</p>
+    </div>
+
+    <div class="insight-box purple">
+      <span class="icon">🗄️</span>
+      <span><strong>Popular options:</strong> Pinecone, Weaviate, Chroma, pgvector (Postgres), Supabase. Each entry is a (vector, text, metadata) tuple. The index is what enables fast similarity lookups.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Stored records</div>
+      <div id="db-output"><div class="empty-state">Complete Step 2 to populate the database.</div></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Next: Query →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: Query embedding ══ -->
+  <div class="step-panel" id="panel-3">
+    <div class="panel-header">
+      <div class="panel-tag tag-purple">Step 4 · Retrieval</div>
+      <h1 class="panel-title">Query embedding</h1>
+      <p class="panel-desc">Your question must be embedded using the <em>exact same model</em> as the chunks. This places it in the same vector space, making comparison meaningful.</p>
+    </div>
+
+    <div class="insight-box amber">
+      <span class="icon">⚠️</span>
+      <span><strong>Critical constraint:</strong> If you embed chunks with model A but query with model B, the vectors live in different spaces — similarity scores will be meaningless. Always use the same model for both.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Your question</div>
+      <input type="text" id="query-input" value="How did Elon Musk apply first principles to rocketry?" style="margin-bottom:16px">
+      <label>Retrieve top-K chunks</label>
+      <div class="slider-row">
+        <input type="range" min="1" max="6" value="3" step="1" id="topk" oninput="document.getElementById('tkv').textContent='K = '+this.value;state.topK=+this.value">
+        <span class="slider-val" id="tkv">K = 3</span>
+      </div>
+      <p style="font-size:12px;color:var(--text3);margin-top:6px">Higher K = more context but noisier. Production systems often retrieve K=20 then re-rank to top 3–5.</p>
+    </div>
+
+    <div id="qvec-display" style="display:none" class="card">
+      <div class="card-title">Query vector (simulated 8-dim)</div>
+      <div class="embed-grid" id="qvec-grid"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="doQueryEmbed()">Embed query →</button>
+    <div class="status" id="status-3"></div>
+
+    <div class="btn-group" id="nav-query" style="display:none">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Next: Search vector DB →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: Similarity search ══ -->
+  <div class="step-panel" id="panel-4">
+    <div class="panel-header">
+      <div class="panel-tag tag-purple">Step 5 · Retrieval</div>
+      <h1 class="panel-title">Similarity search</h1>
+      <p class="panel-desc">The query vector is compared against every stored chunk vector using cosine similarity. The highest-scoring chunks are retrieved as candidates.</p>
+    </div>
+
+    <div class="insight-box teal">
+      <span class="icon">📐</span>
+      <span><strong>Cosine similarity</strong> measures the angle between two vectors (0 = unrelated, 1 = identical direction). It's robust to vector magnitude, which makes it ideal for semantic text matching.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">All chunks scored against your query</div>
+      <div id="all-scores"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(5)">Next: Re-rank →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: Re-ranking ══ -->
+  <div class="step-panel" id="panel-5">
+    <div class="panel-header">
+      <div class="panel-tag tag-amber">Step 6 · Retrieval · Optional</div>
+      <h1 class="panel-title">Re-ranking</h1>
+      <p class="panel-desc">A cross-encoder model re-scores each retrieved chunk for relevance. It reads the query and each chunk together (not as separate vectors), which is slower but far more accurate.</p>
+    </div>
+
+    <div class="insight-box amber">
+      <span class="icon">🎯</span>
+      <span><strong>Why re-rank?</strong> Vector search is fast but imprecise — it uses approximate nearest neighbours. Re-ranking with a cross-encoder catches cases where a chunk is semantically close but not actually relevant to your specific question.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Before re-ranking (vector similarity order)</div>
+      <div id="before-rerank"></div>
+    </div>
+
+    <div class="card" id="after-rerank-card" style="display:none">
+      <div class="card-title">After re-ranking (cross-encoder order)</div>
+      <div id="after-rerank"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="doRerank()">Apply re-ranking →</button>
+    <div class="status" id="status-5"></div>
+
+    <div class="btn-group" id="nav-rerank" style="display:none">
+      <button class="btn btn-secondary" onclick="goStep(4)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(6)">Next: Compose prompt →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 6: Prompt composition ══ -->
+  <div class="step-panel" id="panel-6">
+    <div class="panel-header">
+      <div class="panel-tag tag-teal">Step 7 · Generation</div>
+      <h1 class="panel-title">Prompt composition</h1>
+      <p class="panel-desc">Retrieved chunks are injected into a structured prompt template. This is the step most diagrams skip — but it's where the actual prompt engineering happens.</p>
+    </div>
+
+    <div class="insight-box teal">
+      <span class="icon">🧩</span>
+      <span><strong>What goes in the prompt:</strong> a system instruction (stay grounded), the retrieved context chunks (with source labels), and the user's question. The LLM sees only this — not the full document.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Composed prompt sent to LLM</div>
+      <div class="prompt-box" id="composed-prompt">Complete previous steps to see the composed prompt.</div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="goStep(5)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(7)">Next: Generate answer →</button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 7: Answer ══ -->
+  <div class="step-panel" id="panel-7">
+    <div class="panel-header">
+      <div class="panel-tag tag-green">Step 8 · Generation</div>
+      <h1 class="panel-title">LLM answer</h1>
+      <p class="panel-desc">The LLM generates an answer grounded in the retrieved context. It should cite the chunks and refuse to answer if the context doesn't contain the information.</p>
+    </div>
+
+    <div class="insight-box green">
+      <span class="icon">✅</span>
+      <span><strong>Groundedness</strong> is the key RAG property: the model answers from evidence, not from parametric memory. This reduces hallucination and makes responses auditable.</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Context used</div>
+      <div id="context-used"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Generated answer</div>
+      <div class="answer-box" id="answer-box">Complete all previous steps to generate an answer.</div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">Pipeline summary</div>
+      <div id="pipeline-summary"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="goStep(6)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(0)">↺ Start over with new document</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+const state = {
+  chunkSize: 300,
+  overlap: 60,
+  topK: 3,
+  chunks: [],
+  embeddings: [],
+  queryVec: null,
+  query: '',
+  scored: [],
+  reranked: [],
+};
+
+const KEYWORDS = [
+  'first principles','rocket','spacex','musk','aluminum','titanium','cost','product',
+  'user','competitor','assumption','analogy','problem','thinking','raw material',
+  'question','break','evidence','truth','pattern'
+];
+
+function simEmbed(text) {
+  const t = text.toLowerCase();
+  return KEYWORDS.map((k, i) => {
+    const count = (t.split(k).length - 1);
+    const seed = (i * 7 + text.length * 3) % 17;
+    const base = count > 0 ? 0.45 + count * 0.22 + (seed % 5) * 0.04 : (seed % 10) * 0.028;
+    return Math.min(1, Math.max(0.02, base));
+  }).slice(0, 8);
+}
+
+function cosineSim(a, b) {
+  const dot = a.reduce((s, v, i) => s + v * b[i], 0);
+  const ma = Math.sqrt(a.reduce((s, v) => s + v * v, 0));
+  const mb = Math.sqrt(b.reduce((s, v) => s + v * v, 0));
+  return ma && mb ? dot / (ma * mb) : 0;
+}
+
+// ── Navigation ──
+let currentStep = 0;
+
+function goStep(n) {
+  document.getElementById('panel-' + currentStep).classList.remove('active');
+  document.getElementById('nav-' + currentStep).classList.remove('active');
+  document.getElementById('dn-' + currentStep).classList.remove('active-diag');
+
+  currentStep = n;
+
+  document.getElementById('panel-' + n).classList.add('active');
+  document.getElementById('nav-' + n).classList.add('active');
+  document.getElementById('dn-' + n).classList.add('active-diag');
+
+  const pct = Math.round(((n + 1) / 8) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = 'Step ' + (n + 1) + ' of 8';
+
+  if (n === 2 && state.embeddings.length) renderDB();
+  if (n === 4 && state.scored.length) renderAllScores();
+  if (n === 5 && state.scored.length) renderRerank();
+  if (n === 6 && state.scored.length) renderPrompt();
+  if (n === 7 && state.scored.length) renderAnswer();
+
+  window.scrollTo(0, 0);
+}
+
+function markDone(n) {
+  const btn = document.getElementById('nav-' + n);
+  btn.classList.add('done');
+  document.getElementById('sn-' + n).textContent = '✓';
+}
+
+// ── Step 0: Chunk ──
+function doChunk() {
+  const text = document.getElementById('doc-input').value.trim();
+  if (!text) return;
+  const size = state.chunkSize, ov = state.overlap;
+  const chunks = [];
+  let i = 0;
+  while (i < text.length) {
+    const end = Math.min(i + size, text.length);
+    chunks.push({ id: chunks.length + 1, text: text.slice(i, end), start: i });
+    if (end === text.length) break;
+    i += size - ov;
+  }
+  state.chunks = chunks;
+  state.embeddings = [];
+  state.queryVec = null;
+  state.scored = [];
+
+  const out = document.getElementById('chunk-output');
+  out.innerHTML = '<div class="card"><div class="card-title">Generated chunks (' + chunks.length + ')</div><div class="chunks-grid">' +
+    chunks.map((c, idx) => {
+      const preview = c.text.length > 200 ? c.text.slice(0, 200) + '…' : c.text;
+      const hasOv = idx > 0 && ov > 0;
+      return '<div class="chunk-card"><div class="chunk-meta"><span class="chunk-id">Chunk ' + c.id + '</span><span class="chunk-chars">' + c.text.length + ' chars</span>' +
+        (hasOv ? '<span class="overlap-badge">↔ overlap</span>' : '') + '</div>' + preview + '</div>';
+    }).join('') + '</div></div>';
+
+  document.getElementById('status-0').textContent = '✓ ' + chunks.length + ' chunks from ' + text.length + ' characters';
+  document.getElementById('nav-chunk').style.display = 'flex';
+  markDone(0);
+}
+
+// ── Step 1: Embed ──
+function doEmbed() {
+  if (!state.chunks.length) { alert('Please chunk a document first (Step 1).'); return; }
+  state.embeddings = state.chunks.map(c => ({ chunk: c, vec: simEmbed(c.text) }));
+
+  const stats = document.getElementById('embed-stats');
+  stats.innerHTML =
+    '<div class="stat-card"><div class="stat-val">' + state.chunks.length + '</div><div class="stat-label">Chunks embedded</div></div>' +
+    '<div class="stat-card"><div class="stat-val">8</div><div class="stat-label">Dimensions (simulated)</div></div>' +
+    '<div class="stat-card"><div class="stat-val">' + (state.chunks.length * 8 * 4).toLocaleString() + '</div><div class="stat-label">Bytes stored</div></div>';
+
+  const out = document.getElementById('embed-output');
+  out.innerHTML = state.embeddings.map(e => {
+    const bars = e.vec.map(v =>
+      '<div class="vec-bar" style="height:' + Math.round(v * 32 + 2) + 'px;opacity:' + (0.35 + v * 0.65).toFixed(2) + '"></div>'
+    ).join('');
+    return '<div class="embed-card"><div class="embed-label">Chunk ' + e.chunk.id + '</div><div class="vec-bars">' + bars + '</div>' +
+      '<div style="font-size:10px;color:var(--text3);margin-top:6px;font-family:\'DM Mono\',monospace">[' + e.vec.slice(0,3).map(v=>v.toFixed(2)).join(', ') + '…]</div>' +
+      '</div>';
+  }).join('');
+
+  document.getElementById('status-1').textContent = '✓ ' + state.embeddings.length + ' embeddings generated';
+  document.getElementById('nav-embed').style.display = 'flex';
+  markDone(1);
+}
+
+// ── Step 2: DB ──
+function renderDB() {
+  if (!state.embeddings.length) return;
+  const rows = state.embeddings.map(e => {
+    const vecStr = '[' + e.vec.slice(0,4).map(v=>v.toFixed(2)).join(', ') + ', …]';
+    const preview = e.chunk.text.slice(0, 80) + '…';
+    return '<tr><td><span class="mono">chunk_' + e.chunk.id + '</span></td><td><span class="mono">' + vecStr + '</span></td><td style="color:var(--text2)">' + preview + '</td></tr>';
+  }).join('');
+  document.getElementById('db-output').innerHTML =
+    '<div class="db-table-wrap"><table><thead><tr><th>ID</th><th>Vector (preview)</th><th>Text preview</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+// ── Step 3: Query embed ──
+function doQueryEmbed() {
+  if (!state.embeddings.length) { alert('Please complete Step 2 first.'); return; }
+  state.query = document.getElementById('query-input').value.trim();
+  if (!state.query) return;
+  state.queryVec = simEmbed(state.query);
+
+  const grid = document.getElementById('qvec-grid');
+  const bars = state.queryVec.map(v =>
+    '<div class="vec-bar" style="height:' + Math.round(v * 32 + 2) + 'px;opacity:' + (0.35 + v * 0.65).toFixed(2) + ';background:var(--teal)"></div>'
+  ).join('');
+  grid.innerHTML = '<div class="embed-card"><div class="embed-label">Query vector</div><div class="vec-bars">' + bars + '</div>' +
+    '<div style="font-size:10px;color:var(--text3);margin-top:6px;font-family:\'DM Mono\',monospace">[' + state.queryVec.slice(0,3).map(v=>v.toFixed(2)).join(', ') + '…]</div></div>';
+  document.getElementById('qvec-display').style.display = 'block';
+
+  state.scored = state.embeddings
+    .map(e => ({ ...e, score: cosineSim(state.queryVec, e.vec) }))
+    .sort((a, b) => b.score - a.score);
+  state.reranked = [...state.scored];
+
+  document.getElementById('status-3').textContent = '✓ Query embedded — ready to search';
+  document.getElementById('nav-query').style.display = 'flex';
+  markDone(3);
+}
+
+// ── Step 4: All scores ──
+function renderAllScores() {
+  if (!state.scored.length) return;
+  const html = state.scored.map((r, i) => {
+    const isTop = i < state.topK;
+    const barW = Math.round(r.score * 100);
+    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);' + (i === state.scored.length-1 ? 'border-bottom:none' : '') + '">' +
+      '<span style="font-family:\'DM Mono\',monospace;font-size:12px;min-width:60px;color:var(--text3)">Chunk ' + r.chunk.id + '</span>' +
+      '<div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden">' +
+        '<div style="height:100%;width:' + barW + '%;background:' + (isTop ? 'var(--teal)' : 'var(--border2)') + ';border-radius:4px;transition:width .4s"></div>' +
+      '</div>' +
+      '<span style="font-family:\'DM Mono\',monospace;font-size:12px;min-width:44px;text-align:right;color:' + (isTop ? 'var(--teal)' : 'var(--text3)') + '">' + r.score.toFixed(3) + '</span>' +
+      (isTop ? '<span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)">top-' + state.topK + '</span>' : '<span style="min-width:42px"></span>') +
+      '</div>';
+  }).join('');
+  document.getElementById('all-scores').innerHTML = html;
+  markDone(4);
+}
+
+// ── Step 5: Re-rank ──
+function renderRerank() {
+  const topChunks = state.scored.slice(0, state.topK);
+  document.getElementById('before-rerank').innerHTML = topChunks.map((r, i) =>
+    '<div class="result-card' + (i===0?' best':'') + '"><div class="result-meta"><span class="result-title">Chunk ' + r.chunk.id + (i===0?' · top match':'') + '</span><span class="score-pill">cos ' + r.score.toFixed(3) + '</span></div>' +
+    '<div class="result-text">' + r.chunk.text.slice(0,150) + '…</div></div>'
+  ).join('');
+}
+
+function doRerank() {
+  const topChunks = state.scored.slice(0, state.topK);
+  const q = state.query.toLowerCase();
+
+  const reranked = topChunks.map(r => {
+    const t = r.chunk.text.toLowerCase();
+    const queryWords = q.split(/\s+/).filter(w => w.length > 3);
+    const hits = queryWords.filter(w => t.includes(w)).length;
+    const density = hits / Math.max(queryWords.length, 1);
+    const rerank_score = r.score * 0.5 + density * 0.5 + Math.random() * 0.05;
+    return { ...r, rerank_score };
+  }).sort((a, b) => b.rerank_score - a.rerank_score);
+
+  state.reranked = reranked;
+
+  document.getElementById('after-rerank').innerHTML = reranked.map((r, i) =>
+    '<div class="result-card' + (i===0?' best':'') + '"><div class="result-meta"><span class="result-title">Chunk ' + r.chunk.id + (i===0?' · best after re-rank':'') + '</span><span class="score-pill">rerank ' + r.rerank_score.toFixed(3) + '</span></div>' +
+    '<div class="result-text">' + r.chunk.text.slice(0,150) + '…</div></div>'
+  ).join('');
+
+  document.getElementById('after-rerank-card').style.display = 'block';
+  document.getElementById('status-5').textContent = '✓ Re-ranking complete';
+  document.getElementById('nav-rerank').style.display = 'flex';
+  markDone(5);
+}
+
+// ── Step 6: Prompt ──
+function renderPrompt() {
+  const chunks = state.reranked.length ? state.reranked : state.scored.slice(0, state.topK);
+  const ctxLines = chunks.map((r, i) => '[Context ' + (i+1) + ' — Chunk ' + r.chunk.id + ']:\n' + r.chunk.text).join('\n\n');
+  const prompt = 'SYSTEM:\nYou are a helpful assistant. Answer the user\'s question using ONLY the context provided below. If the context does not contain enough information to answer, say so explicitly. Do not use outside knowledge.\n\n---\n\n' + ctxLines + '\n\n---\n\nUSER QUESTION:\n' + state.query + '\n\nASSISTANT:';
+  document.getElementById('composed-prompt').textContent = prompt;
+  markDone(6);
+}
+
+// ── Step 7: Answer ──
+function renderAnswer() {
+  const chunks = state.reranked.length ? state.reranked : state.scored.slice(0, state.topK);
+
+  document.getElementById('context-used').innerHTML = chunks.map((r, i) =>
+    '<div class="result-card' + (i===0?' best':'') + '" style="margin-bottom:8px"><div class="result-meta"><span class="result-title">Context ' + (i+1) + ' — Chunk ' + r.chunk.id + '</span><span class="score-pill">' + (r.rerank_score ? 'rerank ' + r.rerank_score.toFixed(3) : 'cos ' + r.score.toFixed(3)) + '</span></div>' +
+    '<div class="result-text">' + r.chunk.text + '</div></div>'
+  ).join('');
+
+  const bestText = chunks[0] ? chunks[0].chunk.text : '';
+  let answer = '';
+
+  if (state.query.toLowerCase().includes('elon') || state.query.toLowerCase().includes('rocket') || state.query.toLowerCase().includes('spacex')) {
+    answer = 'Based on the retrieved context:\n\nElon Musk applied first principles thinking to rocketry by refusing to accept the market price of rockets (~$65 million each) at face value. Instead, he decomposed rockets into their fundamental components — asking: "What are rockets actually made of?" The answer: aluminum alloys, titanium, copper, and carbon fiber. By pricing these raw materials directly from commodity markets, he found they cost roughly 2% of the quoted rocket price.\n\nArmed with this insight, SpaceX built rockets in-house at a fraction of the industry cost, rather than purchasing them from existing suppliers. This is the core of first principles reasoning: strip away inherited assumptions, identify the fundamental truths, and rebuild from there — rather than reasoning by analogy from what already exists.\n\n[Source: Chunk ' + (chunks[0] ? chunks[0].chunk.id : '1') + ']';
+  } else if (state.query.toLowerCase().includes('product') || state.query.toLowerCase().includes('pm')) {
+    answer = 'Based on the retrieved context:\n\nFirst principles thinking applies directly to product management. Rather than asking "what did our competitor ship?", a first-principles PM asks "what does the user actually need to accomplish?" This shift forces you to question the assumptions baked into existing solutions and rebuild your reasoning from user evidence.\n\nThe retrieved context emphasises that this is genuinely hard — our brains default to analogy and pattern-matching. But when you want to create something new rather than incrementally improve on what exists, stripping away inherited assumptions is the only reliable path.\n\n[Source: Chunk ' + (chunks[0] ? chunks[0].chunk.id : '1') + ']';
+  } else {
+    const sentences = bestText.split(/[.!?]+/).filter(s => s.trim().length > 20);
+    const ans = sentences.slice(0, 3).join('. ').trim();
+    answer = 'Based on the retrieved context:\n\n' + (ans || bestText.slice(0, 300)) + '.\n\n[Source: Chunk ' + (chunks[0] ? chunks[0].chunk.id : '1') + ']';
+  }
+
+  document.getElementById('answer-box').textContent = answer;
+
+  document.getElementById('pipeline-summary').innerHTML =
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px">' +
+    '<div class="stat-card"><div class="stat-val" style="font-size:22px">' + state.chunks.length + '</div><div class="stat-label">Chunks created</div></div>' +
+    '<div class="stat-card"><div class="stat-val" style="font-size:22px">8</div><div class="stat-label">Vector dimensions</div></div>' +
+    '<div class="stat-card"><div class="stat-val" style="font-size:22px">' + state.topK + '</div><div class="stat-label">Chunks retrieved (K)</div></div>' +
+    '<div class="stat-card"><div class="stat-val" style="font-size:22px">' + state.embeddings.length + '</div><div class="stat-label">Vectors in DB</div></div>' +
+    '</div>';
+
+  markDone(7);
+}
+</script>
+</body>
+</html>
